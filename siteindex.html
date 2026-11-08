@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfumes Importados & Exclusivos</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#F3E5AB',
+                            500: '#D4AF37',
+                            600: '#AA7C11',
+                            700: '#8A6208',
+                        },
+                        emerald: {
+                            900: '#062C22',
+                            950: '#021812',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0F17;
+            color: #E5E7EB;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 4px;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF0C2 0%, #D4AF37 50%, #996515 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-gold-500 selection:text-black">
+
+    <!-- Navbar Top Banner -->
+    <div class="bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-black text-xs font-semibold py-2 px-4 text-center tracking-wider uppercase">
+        ✨ Envio rápido e pagamento 100% seguro direto pelo WhatsApp ✨
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-gray-950/90 backdrop-blur-md border-b border-gold-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full border border-gold-500 flex items-center justify-center bg-gray-900 shadow-md shadow-gold-500/20">
+                    <i class="fa-solid font-serif text-gold-500 text-xl font-bold">NC</i>
+                </div>
+                <div>
+                    <span class="font-serif text-xl sm:text-2xl font-bold tracking-wider gold-gradient-text block leading-tight">NCstore</span>
+                    <span class="text-[10px] text-gray-400 tracking-widest uppercase block">Perfumes Importados</span>
+                </div>
+            </div>
+
+            <!-- Actions Right -->
+            <div class="flex items-center gap-4 sm:gap-6">
+                <!-- Search bar desktop -->
+                <div class="relative hidden md:block w-64">
+                    <input type="text" id="searchInput" oninput="renderProducts()" placeholder="Buscar perfume..." 
+                        class="w-full bg-gray-900 border border-gray-800 rounded-full py-2 pl-10 pr-4 text-sm text-gray-200 focus:outline-none focus:border-gold-500 transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-gray-500 text-sm"></i>
+                </div>
+
+                <!-- Contact Direct WhatsApp -->
+                <a href="https://wa.me/5567991450882" target="_blank" class="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition border border-emerald-500/30 bg-emerald-950/40 px-3 py-1.5 rounded-full" title="Falar no WhatsApp">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span class="hidden sm:inline font-medium">(67) 99145-0882</span>
+                </a>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCartDrawer()" class="relative p-2.5 rounded-full bg-gray-900 hover:bg-gray-800 border border-gold-500/30 text-gold-500 transition flex items-center justify-center">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cartCountBadge" class="absolute -top-1 -right-1 bg-gold-500 text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 py-16 sm:py-24 border-b border-gray-900 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold-500/10 via-transparent to-transparent pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <span class="text-gold-500 text-sm font-semibold tracking-widest uppercase mb-3 inline-block">Coleção de Luxo</span>
+            <h1 class="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-white mb-6">
+                NCstore Perfumes
+            </h1>
+            <p class="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
+                Fragrâncias importadas selecionadas com excelência. Compre diretamente via WhatsApp com agilidade e total segurança.
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-4 text-xs sm:text-sm text-gray-400">
+                <span class="flex items-center gap-2 bg-gray-900/80 px-4 py-2 rounded-full border border-gray-800">
+                    <i class="fa-solid fa-circle-check text-gold-500"></i> Produto 100% Original
+                </span>
+                <span class="flex items-center gap-2 bg-gray-900/80 px-4 py-2 rounded-full border border-gray-800">
+                    <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> Vendas pelo WhatsApp
+                </span>
+                <span class="flex items-center gap-2 bg-gray-900/80 px-4 py-2 rounded-full border border-gray-800">
+                    <i class="fa-solid fa-truck-fast text-gold-500"></i> Envio Garantido
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-1 w-full">
+        
+        <!-- Controls Bar: Filter & Search Mobile -->
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between mb-10 pb-6 border-b border-gray-800/60">
+            
+            <!-- Category Filters -->
+            <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
+                <button onclick="setFilter('todos')" id="filter-todos" class="filter-btn active px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition duration-200 border border-gold-500 bg-gold-500 text-black">
+                    Todos os Perfumes
+                </button>
+                <button onclick="setFilter('feminino')" id="filter-feminino" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition duration-200 border border-gray-800 bg-gray-900 text-gray-300 hover:border-gold-500/50">
+                    <i class="fa-solid fa-venus mr-1.5 text-pink-400"></i> Femininos
+                </button>
+                <button onclick="setFilter('masculino')" id="filter-masculino" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition duration-200 border border-gray-800 bg-gray-900 text-gray-300 hover:border-gold-500/50">
+                    <i class="fa-solid fa-mars mr-1.5 text-blue-400"></i> Masculinos
+                </button>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="relative w-full md:hidden">
+                <input type="text" id="searchInputMobile" oninput="syncAndRenderSearch(this.value)" placeholder="Buscar perfume pelo nome..." 
+                    class="w-full bg-gray-900 border border-gray-800 rounded-full py-2.5 pl-10 pr-4 text-sm text-gray-200 focus:outline-none focus:border-gold-500">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-500 text-sm"></i>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Product Cards render dynamically here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-20">
+            <i class="fa-solid fa-spray-can text-5xl text-gray-700 mb-4"></i>
+            <h3 class="text-xl font-serif font-bold text-gray-300">Nenhum perfume encontrado</h3>
+            <p class="text-gray-500 text-sm mt-1">Tente pesquisar por outro termo ou selecione outra categoria.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 border-t border-gray-900 py-10 mt-16 text-center text-sm text-gray-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-serif text-lg font-semibold text-gold-500 mb-2">NCstore</p>
+            <p class="mb-4">Vendas exclusivas e atendimento via WhatsApp: (67) 99145-0882</p>
+            <p class="text-xs text-gray-600">&copy; <span id="year"></span> NCstore. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- CART SIDEBAR / DRAWER -->
+    <div id="cartOverlay" onclick="toggleCartDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 transition-opacity opacity-0 pointer-events-none"></div>
+
+    <aside id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-gray-950 border-l border-gold-500/20 z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+        <!-- Drawer Header -->
+        <div class="p-5 border-b border-gray-800 flex items-center justify-between bg-gray-900/50">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-gold-500"></i>
+                <h2 class="font-serif text-lg font-bold text-white">Seu Carrinho</h2>
+                <span id="drawerCartCount" class="text-xs bg-gold-500/20 text-gold-400 font-semibold px-2 py-0.5 rounded-full border border-gold-500/30">0 itens</span>
+            </div>
+            <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Drawer Items List -->
+        <div id="cartItemsList" class="flex-1 overflow-y-auto p-5 space-y-4">
+            <!-- Items rendered via JS -->
+        </div>
+
+        <!-- Drawer Footer / Checkout -->
+        <div class="p-5 border-t border-gray-800 bg-gray-900/80 space-y-4">
+            
+            <div class="space-y-1.5 text-sm">
+                <div class="flex justify-between text-gray-400">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal" class="text-gray-200">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between text-gray-400">
+                    <span>Atendimento & Envio</span>
+                    <span class="text-emerald-400 font-medium">Via WhatsApp</span>
+                </div>
+                <div class="flex justify-between text-base font-bold text-white pt-2 border-t border-gray-800">
+                    <span>Total</span>
+                    <span id="cartTotal" class="text-gold-500 text-xl font-serif">R$ 0,00</span>
+                </div>
+            </div>
+
+            <!-- Buyer Details Form for WhatsApp message -->
+            <div class="space-y-2 pt-2">
+                <label class="text-xs font-medium text-gray-300 block">Seu Nome para o Atendimento:</label>
+                <input type="text" id="buyerNameInput" placeholder="Ex: Maria Silva" 
+                    class="w-full bg-gray-950 border border-gray-800 rounded-lg py-2 px-3 text-sm text-gray-200 focus:outline-none focus:border-gold-500">
+            </div>
+
+            <!-- WhatsApp Checkout Button -->
+            <button onclick="checkoutWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition duration-200 shadow-lg shadow-emerald-900/40">
+                <i class="fa-brands fa-whatsapp text-xl"></i>
+                <span>Finalizar Pedido via WhatsApp</span>
+            </button>
+            <p class="text-[11px] text-gray-500 text-center">Ao clicar, você será direcionado para o número 5567991450882.</p>
+        </div>
+    </aside>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Seller WhatsApp (NCstore)
+        const sellerPhone = "5567991450882";
+
+        // Perfumes com os preços originais exatos dos adesivos das fotos
+        const products = [
+            {
+                id: 1,
+                name: "Oh My Stunner Pour Femme",
+                category: "feminino",
+                price: 65.00,
+                volume: "100ml / Eau de Parfum",
+                image: "SaveClip.App_542077660_17843555001568551_3684182359034184753_n.jpg",
+                fallbackImage: "stunner.jpg",
+                bgGradient: "from-rose-950/80 via-pink-900/40 to-gray-950",
+                description: "Uma fragrância fascinante e sedutora com frasco refinado e toque elegante."
+            },
+            {
+                id: 2,
+                name: "Miss Dona Juna Pour Femme",
+                brand: "AVEC Creations",
+                category: "feminino",
+                price: 190.00,
+                volume: "100ml (3.4 FL.OZ)",
+                image: "SaveClip.App_541402380_17843560008568551_5539716154961263892_n.jpg",
+                fallbackImage: "missdona.jpg",
+                bgGradient: "from-amber-950/70 via-rose-950/40 to-gray-950",
+                description: "Eau de Parfum delicado e vibrante com notas florais e sofisticação única."
+            },
+            {
+                id: 3,
+                name: "Drive For Man",
+                brand: "Mega Collection",
+                category: "masculino",
+                price: 190.00,
+                volume: "100ml (3.4 FL.OZ)",
+                image: "SaveClip.App_540646048_17843560029568551_6189923183845222270_n.jpg",
+                fallbackImage: "drive.jpg",
+                bgGradient: "from-red-950/80 via-dark-900/40 to-gray-950",
+                description: "Perfume masculino de presença marcante em frasco tom rubi com amadeirado intenso."
+            },
+            {
+                id: 4,
+                name: "Asad",
+                brand: "Lattafa",
+                category: "masculino",
+                price: 190.00,
+                volume: "100ml (3.4 FL.OZ)",
+                image: "SaveClip.App_540525522_17843560056568551_6686169180245313967_n.jpg",
+                fallbackImage: "asad.jpg",
+                bgGradient: "from-amber-950/90 via-yellow-950/30 to-gray-950",
+                description: "Perfume oriental icônico da Lattafa com detalhes dourados e aroma especiado inconfundível."
+            },
+            {
+                id: 5,
+                name: "9 AM Dive",
+                brand: "Afnan",
+                category: "masculino",
+                price: 190.00,
+                volume: "100ml (3.4 FL.OZ)",
+                image: "SaveClip.App_541215197_17843560068568551_6601375709713209785_n.jpg",
+                fallbackImage: "9am.jpg",
+                bgGradient: "from-cyan-950/80 via-blue-950/40 to-gray-950",
+                description: "Eau de Parfum fresco e aquático da Afnan. Elegância e vivacidade marcantes."
+            }
+        ];
+
+        // State Management
+        let cart = JSON.parse(localStorage.getItem('ncstore_cart')) || [];
+        let activeFilter = 'todos';
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('year').textContent = new Date().getFullYear();
+            renderProducts();
+            updateCartUI();
+        });
+
+        // Sync Search inputs
+        function syncAndRenderSearch(val) {
+            document.getElementById('searchInput').value = val;
+            renderProducts();
+        }
+
+        // Set Filter Category
+        function setFilter(cat) {
+            activeFilter = cat;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-black', 'border-gold-500');
+                btn.classList.add('bg-gray-900', 'text-gray-300', 'border-gray-800');
+            });
+            const activeBtn = document.getElementById(`filter-${cat}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-gray-900', 'text-gray-300', 'border-gray-800');
+                activeBtn.classList.add('bg-gold-500', 'text-black', 'border-gold-500');
+            }
+            renderProducts();
+        }
+
+        // Render Product Cards
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const searchVal = (document.getElementById('searchInput').value || "").toLowerCase();
+
+            const filtered = products.filter(p => {
+                const matchesFilter = activeFilter === 'todos' || p.category === activeFilter;
+                const matchesSearch = p.name.toLowerCase().includes(searchVal) || 
+                                      (p.brand && p.brand.toLowerCase().includes(searchVal));
+                return matchesFilter && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = filtered.map(product => `
+                <div class="group bg-gray-900/60 border border-gray-800/80 hover:border-gold-500/40 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:shadow-gold-500/5">
+                    <!-- Image Wrapper with Elegant Gradient Background -->
+                    <div class="relative aspect-square overflow-hidden bg-gradient-to-b ${product.bgGradient} flex items-center justify-center p-4">
+                        <img src="${product.image}" onError="this.src='${product.fallbackImage}'" alt="${product.name}" class="w-full h-full object-contain transform group-hover:scale-105 transition duration-500 drop-shadow-2xl">
+                        <span class="absolute top-3 right-3 bg-gold-500 text-black font-bold text-xs px-2.5 py-1 rounded-full uppercase tracking-wider shadow-lg">
+                            R$ ${product.price.toFixed(2).replace('.', ',')}
+                        </span>
+                        <span class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md text-gray-300 text-[11px] px-2.5 py-1 rounded-full border border-white/10">
+                            ${product.volume}
+                        </span>
+                    </div>
+
+                    <!-- Details -->
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            ${product.brand ? `<span class="text-[11px] font-semibold tracking-wider text-gold-500 uppercase">${product.brand}</span>` : ''}
+                            <h3 class="font-serif text-lg font-bold text-white group-hover:text-gold-400 transition mb-2">
+                                ${product.name}
+                            </h3>
+                            <p class="text-xs text-gray-400 leading-relaxed mb-4 line-clamp-2">
+                                ${product.description}
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-800/60 flex items-center justify-between gap-3">
+                            <div>
+                                <span class="text-[10px] text-gray-500 block uppercase">Preço</span>
+                                <span class="font-serif text-xl font-bold text-white">R$ ${product.price.toFixed(2).replace('.', ',')}</span>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <button onclick="buyNowDirect(${product.id})" title="Comprar pelo WhatsApp" class="bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/40 p-2.5 rounded-xl transition">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                </button>
+                                <button onclick="addToCart(${product.id})" class="bg-gold-500 hover:bg-gold-400 text-black font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 transition">
+                                    <i class="fa-solid fa-plus"></i> Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cart Logic
+        function addToCart(productId) {
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                const product = products.find(p => p.id === productId);
+                cart.push({ ...product, quantity: 1 });
+            }
+            saveCart();
+            updateCartUI();
+            toggleCartDrawer(true);
+        }
+
+        function updateQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+            saveCart();
+            updateCartUI();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            saveCart();
+            updateCartUI();
+        }
+
+        function saveCart() {
+            localStorage.setItem('ncstore_cart', JSON.stringify(cart));
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((acc, curr) => acc + curr.quantity, 0);
+            const totalPrice = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
+
+            // Badges
+            const badge = document.getElementById('cartCountBadge');
+            const drawerBadge = document.getElementById('drawerCartCount');
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.classList.remove('hidden');
+                drawerBadge.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'itens'}`;
+            } else {
+                badge.classList.add('hidden');
+                drawerBadge.textContent = `0 itens`;
+            }
+
+            // Totals
+            document.getElementById('cartSubtotal').textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+            document.getElementById('cartTotal').textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+
+            // Drawer Items List
+            const itemsList = document.getElementById('cartItemsList');
+            if (cart.length === 0) {
+                itemsList.innerHTML = `
+                    <div class="text-center py-12 text-gray-500 space-y-3">
+                        <i class="fa-solid fa-bag-shopping text-4xl text-gray-700"></i>
+                        <p class="text-sm">Seu carrinho está vazio.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            itemsList.innerHTML = cart.map(item => `
+                <div class="flex items-center gap-3 bg-gray-900 p-3 rounded-xl border border-gray-800">
+                    <img src="${item.image}" onError="this.src='${item.fallbackImage}'" alt="${item.name}" class="w-14 h-14 object-contain bg-gray-950 rounded-lg p-1">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-white truncate">${item.name}</h4>
+                        <span class="text-[11px] text-gold-500">R$ ${item.price.toFixed(2).replace('.', ',')}</span>
+                        <div class="flex items-center gap-2 mt-2">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="w-5 h-5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded flex items-center justify-center text-xs">-</button>
+                            <span class="text-xs text-gray-200 font-semibold px-1">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="w-5 h-5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded flex items-center justify-center text-xs">+</button>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-gray-500 hover:text-red-400 p-1">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Toggle Cart Drawer
+        function toggleCartDrawer(openForce = null) {
+            const drawer = document.getElementById('cartDrawer');
+            const overlay = document.getElementById('cartOverlay');
+
+            const isOpen = !drawer.classList.contains('translate-x-full');
+            const shouldOpen = openForce !== null ? openForce : !isOpen;
+
+            if (shouldOpen) {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                drawer.classList.remove('translate-x-full');
+            } else {
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                drawer.classList.add('translate-x-full');
+            }
+        }
+
+        // WhatsApp Checkout Logic
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                return;
+            }
+
+            const buyerName = document.getElementById('buyerNameInput').value.trim() || 'Cliente';
+            const totalPrice = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
+
+            let msg = `Olá NCstore! Meu nome é *${buyerName}* e gostaria de fazer o pedido dos seguintes perfumes:\n\n`;
+
+            cart.forEach((item, idx) => {
+                msg += `*${idx + 1}. ${item.name}*\n`;
+                msg += `   • Quantidade: ${item.quantity}\n`;
+                msg += `   • Valor Un: R$ ${item.price.toFixed(2).replace('.', ',')}\n`;
+                msg += `   • Subtotal: R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\n\n`;
+            });
+
+            msg += `💰 *TOTAL DO PEDIDO:* R$ ${totalPrice.toFixed(2).replace('.', ',')}\n\n`;
+            msg += `Como faço para efetuar o pagamento e combinar a entrega?`;
+
+            const encodedMsg = encodeURIComponent(msg);
+            const whatsappUrl = `https://wa.me/${sellerPhone}?text=${encodedMsg}`;
+
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Direct Buy Single Product via WhatsApp
+        function buyNowDirect(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            let msg = `Olá NCstore! Gostaria de comprar o perfume *${product.name}* (R$ ${product.price.toFixed(2).replace('.', ',')}).\n\n`;
+            msg += `Como faço para efetuar o pagamento e combinar a entrega?`;
+
+            const encodedMsg = encodeURIComponent(msg);
+            const whatsappUrl = `https://wa.me/${sellerPhone}?text=${encodedMsg}`;
+
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
